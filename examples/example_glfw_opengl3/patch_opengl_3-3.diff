@@ -1,0 +1,27 @@
+ examples/example_glfw_opengl3/main.cpp | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
+
+diff --git a/examples/example_glfw_opengl3/main.cpp b/examples/example_glfw_opengl3/main.cpp
+index 30943301..2d52fb95 100644
+--- a/examples/example_glfw_opengl3/main.cpp
++++ b/examples/example_glfw_opengl3/main.cpp
+@@ -67,9 +67,16 @@ int main(int, char**)
+     // GL 3.0 + GLSL 130
+     const char* glsl_version = "#version 130";
+     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+-    //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
+-    //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // 3.0+ only
++#if defined(IMGUI_IMPL_OPENGL_LOADER_GL3W)
++  // GL 3.0 + GLSL 130
++  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
++#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLAD2)
++  // GL 3.3 + GLSL 130
++  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
++  // 本机支持OpenGL 3.3，以下两句必须添加
++  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // 3.2+ only
++  glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);           // 3.0+ only
++#endif
+ #endif
+ 
+     // Create window with graphics context
